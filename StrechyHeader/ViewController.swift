@@ -35,7 +35,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.imageView.image = UIImage(named: "image.jpg")
+        self.imageView.image = UIImage(named: "image.png")
         
         //Step 5: Set Content Inset for tableview to hold image on top
         self.tableView.contentInset = UIEdgeInsets(top: imageHeight, left: 0, bottom: 0, right: 0)
@@ -46,6 +46,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //Step 7: add imageview to tableview and send it to back
         self.tableView.addSubview(imageView)
         self.tableView.sendSubviewToBack(imageView)
+        
+        tableView.tableFooterView = UIView(frame: CGRectZero)
     }
     
     //step 8: Define method for image location changes
@@ -75,12 +77,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel?.text = "Strechy Header"
+
         return cell
     }
     
