@@ -12,9 +12,57 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet weak var tableView: UITableView!
     
+    //Step 1: Create a imageview reference for tableview to hold the image
+    var imageView = UIImageView()
+    
+    //Step 2: Set the factor for parallelxeffect, it is a float value and can be overwritable
+    var parallexFactor: CGFloat = 2.0
+    
+    //Step 3: set the default height for the image on top
+    var imageHeight: CGFloat = 300.0 {
+        didSet {
+            moveImage()
+        }
+    }
+    
+    //Step 4 : Initialize the scrollOffset variable
+    var scrollOffset: CGFloat = 0 {
+        didSet {
+            moveImage()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        self.imageView.image = UIImage(named: "image.jpg")
+        
+        //Step 5: Set Content Inset for tableview to hold image on top
+        self.tableView.contentInset = UIEdgeInsets(top: imageHeight, left: 0, bottom: 0, right: 0)
+        
+        //Step 6: Change the content mode og imageview
+        self.imageView.contentMode = .ScaleAspectFill
+        
+        //Step 7: add imageview to tableview and send it to back
+        self.tableView.addSubview(imageView)
+        self.tableView.sendSubviewToBack(imageView)
+    }
+    
+    //step 8: Define method for image location changes
+    func moveImage() {
+        let imageOffset = (scrollOffset > 0) ? scrollOffset / parallexFactor : 0
+        let imageHeight = (scrollOffset > 0) ? self.imageHeight : self.imageHeight - scrollOffset
+        self.imageView.frame = CGRect(x: 0, y: -imageHeight + imageOffset, width: view.bounds.size.width, height: imageHeight)
+    }
+    
+    //Step 9 : update image position after layout changes
+    override func viewDidLayoutSubviews() {
+        moveImage()
+    }
+    
+    //step 10: update scrolloffset on tableview scroll
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollOffset = tableView.contentOffset.y + imageHeight
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,6 +82,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
         cell.textLabel?.text = "Strechy Header"
         return cell
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
 
 }
