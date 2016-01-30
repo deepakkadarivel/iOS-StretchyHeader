@@ -35,6 +35,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addGradientBackground()
+        
         self.imageView.image = UIImage(named: "image.png")
         
         //Step 5: Set Content Inset for tableview to hold image on top
@@ -87,7 +89,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+        return .Default
+    }
+    
+    func addGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.frame
+        
+        let colorTop: AnyObject = UIColor(red: 200.0/255.0, green: 204.0/255.0, blue: 208.0/255.0, alpha: 1.0).CGColor
+        let colorBottom: AnyObject = UIColor(red: 197.0/255.0, green: 166.0/255.0, blue: 129.0/255, alpha: 1.0).CGColor
+        gradientLayer.colors = [colorTop, colorBottom]
+        gradientLayer.locations = [0.0, 1.0]
+        
+        view.layer.insertSublayer(gradientLayer, atIndex: 0)
     }
 
 }
